@@ -8,9 +8,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
-    @yield('seo')
+@yield('seo')
 
-    <!-- Fonts -->
+<!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
@@ -24,20 +24,30 @@
 <div id="app">
     @if ((Auth::user() && Auth::user()->isAdmin()))
         @include('partials.header', ['admin' => false])
-{{--        @include('partials.header-admin')--}}
+        {{--        @include('partials.header-admin')--}}
     @else
         @include('partials.header')
     @endif
 
 
     <main class="py-5 mt-5">
-{{--        @foreach(['danger', 'success', 'warning', 'info', 'primary', 'success'] as $alert)--}}
-{{--            @if (session()->has($alert))--}}
-{{--                <div class="alert alert-{{ $alert }}" role="alert">--}}
-{{--                    {!! session()->get($alert) !!}--}}
-{{--                </div>--}}
-{{--            @endif--}}
-{{--        @endforeach--}}
+        <div class="container-fluid px-5">
+            @foreach(['danger', 'success', 'warning', 'info', 'primary', 'success'] as $alert)
+                @if (session()->has($alert))
+                    @if (is_array(session()->get($alert)))
+                        @foreach(session()->get($alert) as $text)
+                            <div class="alert alert-{{ $alert }}" role="alert">
+                                {!! $text !!}
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="alert alert-{{ $alert }}" role="alert">
+                            {!! session()->get($alert) !!}
+                        </div>
+                    @endif
+                @endif
+            @endforeach
+        </div>
         <noscript>
             <h1 class="text-center mt-5 pt-5">This site will not work without JavaScript</h1>
             <h2 class="text-center mb-5 pb-5">Please enable JavaScript to continue</h2>

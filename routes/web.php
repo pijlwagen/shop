@@ -4,7 +4,7 @@ Route::get('/', 'HomeController@index');
 
 Route::get('test', function () {
     Session::flush();
-//    dd(Session::all());
+//    print_r(Session::get('cart'));
 });
 
 
@@ -26,7 +26,7 @@ Route::group([
     'prefix' => '/cart',
     'namespace' => 'Cart'
 ], function () {
-    Route::get('/', 'CartController@index')->name('cart.index');
+    Route::get('/', 'CartController@index')->name('cart.index')->middleware('cart.refresh');
     Route::post('/add/{id}', 'CartController@add')->name('cart.add');
 });
 

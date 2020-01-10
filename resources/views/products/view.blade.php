@@ -39,7 +39,7 @@
                             </h3>
                         @endif
                     @else
-                        <h3>&euro;<% number_format(price, 2, ',', '.') %></h3>
+                        <h3>&euro;<% number_format(price(), 2, ',', '.') %></h3>
                     @endif
                     <p>Item number: 293{{ $product->id }}</p>
                     <hr>
