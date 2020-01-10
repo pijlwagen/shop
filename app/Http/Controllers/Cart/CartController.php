@@ -4,13 +4,13 @@
 namespace App\Http\Controllers\Cart;
 
 
+use App\Classes\Cart\Item;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Carbon\Carbon;
-use Darryldecode\Cart\CartCondition;
 use Illuminate\Http\Request;
+use App\Classes\Cart\Cart;
 use Illuminate\Support\Facades\Session;
-use Darryldecode\Cart\Facades\CartFacade as Cart;
 
 class CartController extends Controller
 {
@@ -21,54 +21,26 @@ class CartController extends Controller
         }, 'discounts' => function ($query) {
             return $query->where('active_from', '<', Carbon::now()->format('Y-m-d H:i:s'))->where('active_until', '>', Carbon::now()->format('Y-m-d H:i:s'))->orderBy('active_from', 'ASC');
         }])->findOrFail($id);
-        $condition = null;
-        $discount = $product->discounts->first();
-        if ($discount) {
-            switch ($discount->type) {
-                case 'fixed':
-                    $condition = new CartCondition([
-                        'name' => 'SALE &euro;' . $discount->amount,
-                        'type' => 'sale',
-                        'value' => "-{$discount->amount}"
-                    ]);
-                    break;
-                case 'percentage':
-                    $condition = new CartCondition([
-                        'name' => "SALE {$discount->amount}%",
-                        'type' => 'sale',
-                        'value' => "-{$discount->amount}%"
-                    ]);
-                    break;
-                case 'free':
-                    $condition = new CartCondition([
-                        'name' => "SALE 100%",
-                        'type' => 'sale',
-                        'value' => "-100%"
-                    ]);
-                    break;
-            }
-        }
-        dd($product->toArray());
-        $item = [
-            'id' => $product->id,
-            'name' => $product->name,
-            'price' => $product->price,
-            'quantity' => $request->input('quantity'),
-            'attributes' => [],
-        ];
-        if ($condition) {
 
-        }
-        Cart::add();
-
-        return redirect()->route('products.view', $product->slug)->with('success', 'Added to cart');
+        $cart = Cart::add($product, $request->input('quantity'), $request->input('option') ?? []);
+        $request->session()->put('cart', json_encode($cart));
+        return response()->json(['success' => true, 'cart' => $cart]);
     }
 
     public function index()
     {
-        $cart = Cart::getContent();
+        $cart = Cart::all();
         return view('cart.index', [
             'cart' => $cart
         ]);
+    }
+
+    public function update(Request $request)
+    {
+        $request->validate([
+            'quantity.*' => 'required|numeric'
+        ]);
+
+        Cart::update($request->input('quantity'))
     }
 }
