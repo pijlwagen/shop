@@ -56,18 +56,13 @@
                                         </div>
                                         @enderror
                                     </div>
-                                    <div class="form-group row">
-                                        <div class="col-7">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input" name="hide"
-                                                       id="hide">
-                                                <label class="custom-control-label" for="hide">Hide this category from
-                                                    the
-                                                    filter</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-5 ml-auto">
-                                            <button class="btn btn-primary float-right">Save</button>
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox mr-sm-2">
+                                            <input type="checkbox" class="custom-control-input" name="hide"
+                                                   id="hide">
+                                            <label class="custom-control-label" for="hide">Hide this category from
+                                                the
+                                                filter</label>
                                         </div>
                                     </div>
                                 </div>

@@ -2,15 +2,22 @@
 
 @section('content')
     <div class="container-fluid" id="cart-overview">
-        <div class="row">
-            <div class="col-lg-11 col-xl-10 mx-auto">
-                <div class="row">
-                    <div class="col-lg-9 mb-3">
-                        <div class="card shadow-sm">
-                            <div class="card-header">
-                                <h1 style="font-size: 1.5rem">Cart Overview</h1>
+        <form action="{{ route('cart.update') }}" method="POST">
+            @csrf
+            <div class="row">
+                <div class="col-lg-9 mb-3">
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            <h1 style="font-size: 1.5rem">Cart Overview</h1>
+                        </div>
+                        <div class="card-body">
+                            @if (Cart::count() === 0)
+                            <div class="d-flex text-center">
+                                <div class="m-auto">
+                                    Your cart is empty
+                                </div>
                             </div>
-                            <div class="card-body">
+                            @else
                                 @foreach($cart as $item)
                                     <div class="row">
                                         @if (count($item->images) > 0)
@@ -55,38 +62,47 @@
                                         </div>
                                         <div class="col-2">
                                             <label for="quantity-{{ $item->id }}">Quantity</label>
-                                            <input type="number" class="form-control" id="quantity-{{ $item->id }}"  name="quantity[{{ $item->hash }}]" value="{{ $item->quantity }}">
+                                            <input type="number"
+                                                   class="form-control @error('quantity.' . $item->hash) is-invalid @enderror"
+                                                   id="quantity-{{ $item->id }}"
+                                                   name="quantity[{{ $item->hash }}]"
+                                                   value="{{ old("quantity['$item->hash']", $item->quantity) }}">
+                                            @error('quantity.' . $item->hash)
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
                                         </div>
                                     </div>
                                     <hr>
                                 @endforeach
-                            </div>
+                            @endif
                         </div>
                     </div>
-                    <div class="col-lg-3">
-                        <div class="card shadow-sm">
-                            <div class="card-header">
-                                <h1 style="font-size: 1.5rem">Cart Summary</h1>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-6 text-left">
-                                        <p>Total</p>
-                                    </div>
-                                    <div class="col-6 text-right">
-                                        &euro;{{ number_format(Cart::subTotal(), 2, ',', '.') }}
-                                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            <h1 style="font-size: 1.5rem">Cart Summary</h1>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6 text-left">
+                                    <p>Total</p>
                                 </div>
-                                <button class="btn btn-primary w-100 mb-3" v-bind:disabled="errors.size != 0"
-                                        v-bind:class="{disabled: errors.size != 0}">Update cart
-                                </button>
-                                <a href="#" class="btn btn-success w-100">Checkout</a>
+                                <div class="col-6 text-right">
+                                    &euro;{{ number_format(Cart::subTotal(), 2, ',', '.') }}
+                                </div>
                             </div>
+                            <button class="btn btn-primary w-100 mb-3" v-bind:disabled="errors.size != 0"
+                                    v-bind:class="{disabled: errors.size != 0}">Update cart
+                            </button>
+                            <a href="{{ route('cart.checkout') }}" class="btn btn-success w-100">Checkout</a>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 @stop
 

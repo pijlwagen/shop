@@ -2,6 +2,10 @@ body {
   font-family: "Raleway", sans-serif;
 }
 
+.payment-card {
+  font-size: 18px;
+}
+
 #app {
   display: -webkit-box;
   display: flex;

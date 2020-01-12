@@ -55,9 +55,9 @@ class ProductController extends Controller
             'option.*.values.*' => 'required'
         ]);
 
-//        DB::beginTransaction();
+        DB::beginTransaction();
 
-//        try {
+        try {
             $product = Product::create([
                 'name' => $request->input('name'),
                 'price' => $request->input('price'),
@@ -129,11 +129,11 @@ class ProductController extends Controller
                 }
             }
 
-//            DB::commit();
-//
-//        } catch (\Exception $e) {
-//            DB::rollBack();
-//        }
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+        }
 
         return redirect()->route('admin.products.index')->with('success', "Successfully created product <b>{$product->name}</b>.");
     }

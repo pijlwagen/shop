@@ -29,6 +29,8 @@ class CategoryController extends Controller
     {
         $request->validate([
             'name' => 'required|max:256',
+            'image' => 'image',
+            'seo-image' => 'image'
         ]);
 
         if ($request->has('image')) {
@@ -48,7 +50,7 @@ class CategoryController extends Controller
                 $file = $request->file('seo-image')->store('uploads/products/', 'public');
             }
             CategorySeo::create([
-                'product_id' => $category->id,
+                'category_id' => $category->id,
                 'title' => $request->input('seo-title'),
                 'keywords' => $request->input('seo-keywords'),
                 'description' => $request->input('seo-description'),
@@ -61,7 +63,7 @@ class CategoryController extends Controller
 
     public function edit($id, Request $request)
     {
-        $category = Category::findOrFail($id);
+        $category = Category::with(['seo'])->findOrFail($id);
         return view('admin.categories.edit', [
             'category' => $category
         ]);
@@ -73,13 +75,34 @@ class CategoryController extends Controller
 
         $request->validate([
             'name' => 'required|max:256',
+            'image' => 'image',
+            'seo-image' => 'image'
         ]);
+
+        if ($request->has('image')) {
+            $image = $request->file('image')->store('uploads/products/', 'public');
+        }
 
         $category->update([
             'name' => $request->input('name'),
             'description' => $request->input('description'),
             'hidden' => !!$request->input('hide'),
+            'image' => $image ?? null,
         ]);
+
+        if ($request->has('seo-title') || $request->has('seo-keywords') || $request->has('seo-description') || $request->has('seo-image')) {
+            $file = null;
+            if ($request->has('seo-image')) {
+                $file = $request->file('seo-image')->store('uploads/products/', 'public');
+            }
+            $category->seo->update([
+                'category_id' => $category->id,
+                'title' => $request->input('seo-title'),
+                'keywords' => $request->input('seo-keywords'),
+                'description' => $request->input('seo-description'),
+                'image' => $file ?? $category->seo->image,
+            ]);
+        }
 
         return redirect()->route('admin.categories.index')->with('success', "Successfully saved category <b>{$category->name}</b>.");
     }

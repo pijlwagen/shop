@@ -113,7 +113,7 @@
                                                 class="form-control @error('categories') is-invalid @enderror" multiple>
                                             @foreach($categories as $category)
                                                 <option
-                                                    value="{{ $category->id }}" {{ in_array($category->id, old('categories', $product->categories->map(function($x){return $x->id;})->toArray())) }}>{{ $category->name }}</option>
+                                                    value="{{ $category->id }}" {{ in_array($category->id, old('categories', $product->categories->map(function($x){return $x->id;})->toArray())) ? 'selected' : '' }}>{{ $category->name }}</option>
                                             @endforeach
                                         </select>
                                         @error('categories')

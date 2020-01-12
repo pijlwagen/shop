@@ -8,7 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class CategorySeo extends Model
 {
-    protected $table = 'product_seo';
+    protected $table = 'category_seo';
+
+    public $primaryKey = 'category_id';
+
 
     protected $fillable = [
         'category_id',

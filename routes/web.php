@@ -27,7 +27,13 @@ Route::group([
     'namespace' => 'Cart'
 ], function () {
     Route::get('/', 'CartController@index')->name('cart.index')->middleware('cart.refresh');
+    Route::get('/checkout', 'CheckoutController@index')->name('cart.checkout')->middleware(['cart.refresh', 'cart.empty']);
+    Route::post('/checkout', 'CheckoutController@store')->name('cart.checkout.store')->middleware(['cart.refresh', 'cart.empty']);
+    Route::get('/checkout/shipping', 'CheckoutController@shipping')->name('cart.checkout.shipping')->middleware(['cart.refresh', 'cart.empty']);
+    Route::get('/checkout/payment', 'CheckoutController@payment')->name('cart.checkout.payment')->middleware(['cart.refresh', 'cart.empty']);
+    Route::post('/checkout/payment/handle', 'CheckoutController@handle')->name('cart.checkout.handle');
     Route::post('/add/{id}', 'CartController@add')->name('cart.add');
+    Route::post('/update', 'CartController@update')->name('cart.update');
 });
 
 /**

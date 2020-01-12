@@ -85,7 +85,7 @@ class Cart
 
     public static function refresh()
     {
-        $items = json_decode(Session::get('cart'));
+        $items = json_decode(Session::get('cart', '[]'));
         $json = [];
         $errors = [];
         foreach ($items as $item) {
@@ -112,12 +112,28 @@ class Cart
         Session::put('cart', json_encode($json));
     }
 
-    public function update($newValues)
+    public static function update($newValues)
     {
         $items = json_decode(Session::get('cart', '[]'));
+        $json = [];
         foreach ($newValues as $hash => $quantity) {
-            $items[$hash]->quanity = $quantity;
+            if ($quantity > 0) {
+                $entry = $items->{$hash};
+                $entry->quantity = $quantity;
+                array_push($json, $entry);
+                $items->{$hash}->quanity = $quantity;
+            }
         }
-        Session::put('cart', json_encode($items));
+        Session::put('cart', json_encode($json));
+    }
+
+    public static function count()
+    {
+        $json = json_decode(Session::get('cart', '[]'));
+        $array = !is_array($json) ? get_object_vars($json) : [];
+        $array = array_map(function ($x) {
+            return $x->quantity;
+        }, $array);
+        return array_sum($array);
     }
 }

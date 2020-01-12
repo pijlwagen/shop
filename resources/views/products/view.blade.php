@@ -22,6 +22,9 @@
                     @csrf
                     <h2 class="text-muted" style="font-size: 14px">{{ config('app.name') }}</h2>
                     <h1>{{ $product->name }}</h1>
+                    @if ($product->categories->first())
+                        <h2 class="text-muted" style="font-size: 1.25rem">{{ $product->categories->map(function ($x) {return $x->name;})->implode(', ') }}</h2>
+                    @endif
                     @php($discount = $product->discounts->first())
                     @if ($discount)
                         @if ($discount->type == 'free')

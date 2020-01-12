@@ -26,7 +26,7 @@
     <main class="py-4 mt-5">
         @foreach(['danger', 'success', 'warning', 'info', 'primary', 'secondary'] as $alert)
             @if (Session::has($alert))
-                <div class="container">
+                <div class="container-fluid px-5">
                     <div class="alert alert-{{ $alert }}" role="alert">
                         {!! Session::get($alert) !!}
                     </div>

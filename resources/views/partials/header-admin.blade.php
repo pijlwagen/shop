@@ -19,6 +19,9 @@
                         Products</a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{ route('admin.categories.index') }}" class="nav-link mr-3"><i class="fa fa-list-ol"></i> Categories</a>
+                </li>
+                <li class="nav-item">
                     <a href="{{ route('admin.users.index') }}" class="nav-link mr-3"><i class="fa fa-user"></i> Users</a>
                 </li>
                 <li class="nav-item">

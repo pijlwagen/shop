@@ -16,4 +16,9 @@ class Category extends Model
         'hidden',
         'image'
     ];
+
+    public function seo()
+    {
+        return $this->hasOne(CategorySeo::class);
+    }
 }

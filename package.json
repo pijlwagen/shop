@@ -18,5 +18,8 @@
         "sass": "^1.15.2",
         "sass-loader": "^7.1.0",
         "vue-template-compiler": "^2.6.11"
+    },
+    "dependencies": {
+        "bootstrap-4-autocomplete": "^1.2.2"
     }
 }

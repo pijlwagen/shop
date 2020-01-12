@@ -2,115 +2,69 @@
 
 @section('content')
     <div class="container-fluid px-5">
-        <h1 style="font-size: 1.75rem" id="checkout-step" class="mb-5">Checkout: Step 1 of 3</h1>
+        <h1 style="font-size: 1.75rem" id="checkout-step" class="mb-5">Checkout: Step 2 of 3</h1>
         <form action="{{ route('cart.checkout.store') }}" method="POST">
             @csrf
             <div class="row">
                 <div class="col-lg-8">
-                    <h3 style="font-size: 1.25rem">Contact Information</h3>
-                    <div class="form-group row">
-                        <div class="col-md-6 mb-3 mb-md-0">
-                            <label for="email">E-Mail</label>
-                            <input type="email" name="email" id="email" value="{{ old('email', Session::get('contact')['email']) }}"
-                                   class="form-control @error('email') is-invalid @enderror">
-                            @error('email')
-                            <div class="invalid-feedback" role="alert">
-                                {{ $message }}
+                    <div class="card shadow-sm mb-3">
+                        <div class="card-body">
+                            <div class="row shipping-email">
+                                <div class="col-auto">
+                                    E-Mail:
+                                </div>
+                                <div class="col-auto">
+                                    {{ Session::get('contact')['email'] }}
+                                </div>
+                                <div class="col-auto ml-auto">
+                                    <a href="{{ route('cart.checkout') }}">Change</a>
+                                </div>
                             </div>
-                            @enderror
-                        </div>
-                        <div class="col-md-6">
-                            <label for="phone">Phone <small class="text-muted">(optional)</small></label>
-                            <input type="text" name="phone" id="phone" value="{{ old('phone', Session::get('contact')['phone']) }}"
-                                   class="form-control @error('phone') is-invalid @enderror">
-                            @error('phone')
-                            <div class="invalid-feedback" role="alert">
-                                {{ $message }}
+                            @if (Session::get('contact')['phone'])
+                                <hr>
+                                <div class="row shipping-phone">
+                                    <div class="col-auto">
+                                        Phone:
+                                    </div>
+                                    <div class="col-auto">
+                                        {{ Session::get('contact')['phone'] }}
+                                    </div>
+                                    <div class="col-auto ml-auto">
+                                        <a href="{{ route('cart.checkout') }}">Change</a>
+                                    </div>
+                                </div>
+                            @endif
+                            <hr>
+                            <div class="row shipping-address">
+                                <div class="col-md-auto">
+                                    Ship to:
+                                </div>
+                                <div class="col-auto">
+                                    {{ $address->address }},
+                                    @if ($address->address_extra)
+                                        {{ $address->address_extra }},
+                                    @endif
+                                    {{$address->zip }} {{ $address->city }},
+                                    {{ $address->country }}
+                                </div>
+                                <div class="col-auto ml-auto">
+                                    <a href="{{ route('cart.checkout') }}">Change</a>
+                                </div>
                             </div>
-                            @enderror
-                        </div>
-                    </div>
-                    <hr class="my-4">
-                    <h3 style="font-size: 1.25rem">Shipping Address</h3>
-                    <div class="form-group row">
-                        <div class="col-sm-6 mb-3 m-sm-0">
-                            <label for="first-name">First name</label>
-                            <input type="text" name="first-name" id="first-name" value="{{ old('first-name', $address->first_name ?? null) }}"
-                                   class="form-control @error('first-name') is-invalid @enderror">
-                            @error('first-name')
-                            <div class="invalid-feedback" role="alert">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-                        <div class="col-sm-6">
-                            <label for="last-name">Last name</label>
-                            <input type="text" name="last-name" id="last-name" value="{{ old('last-name', $address->last_name ?? null) }}"
-                                   class="form-control @error('last-name') is-invalid @enderror">
-                            @error('last-name')
-                            <div class="invalid-feedback" role="alert">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-md-7 mb-3 mb-md-0">
-                            <label for="address">Address</label>
-                            <input type="text" name="address" id="address" value="{{ old('address', $address->address ?? null) }}"
-                                   class="form-control @error('address') is-invalid @enderror">
-                            @error('address')
-                            <div class="invalid-feedback" role="alert">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-                        <div class="col-md-5">
-                            <label for="address-details">Apartment / suite <small class="text-muted">(optional)</small></label>
-                            <input type="text" name="address-details" id="address-details"
-                                   value="{{ old('address-details', $address->address_extra ?? null) }}"
-                                   class="form-control @error('address-details') is-invalid @enderror">
-                            @error('address-details')
-                            <div class="invalid-feedback" role="alert">
-                                {{ $message }}
-                            </div>
-                            @enderror
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <div class="col-sm-7 mb-3 mb-sm-0">
-                            <label for="city">City</label>
-                            <input type="text" name="city" id="city" value="{{ old('city', $address->city ?? null) }}"
-                                   class="form-control @error('city') is-invalid @enderror">
-                            @error('city')
-                            <div class="invalid-feedback" role="alert">
-                                {{ $message }}
+                    <h3 style="font-size: 1.25rem">Shipping Method</h3>
+                    <div class="card shadow-sm mb-5">
+                        <div class="card-body">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="shipping" name="shipping" class="custom-control-input" checked>
+                                <label class="custom-control-label" for="shipping">Free Worldwide Shipping</label>
                             </div>
-                            @enderror
-                        </div>
-                        <div class="col-sm-5">
-                            <label for="zip">Postal code</label>
-                            <input type="text" name="zip" id="zip" value="{{ old('zip', $address->zip ?? null) }}"
-                                   class="form-control @error('zip') is-invalid @enderror">
-                            @error('zip')
-                            <div class="invalid-feedback" role="alert">
-                                {{ $message }}
-                            </div>
-                            @enderror
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="country">Country</label>
-                        <input type="text" name="country" id="country" value="{{ old('country', $address->country ?? null) }}"
-                               class="form-control @error('country') is-invalid @enderror" autocomplete="off">
-                        @error('country')
-                        <div class="invalid-feedback" role="alert">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
-                    <div class="form-group">
-                        <button class="btn btn-primary float-right">Next step</button>
+                        <a href="{{ route('cart.checkout.payment') }}" class="btn btn-primary float-right">Next step</a>
+                        <a href="{{ route('cart.checkout') }}" class="btn btn-primary float-left">Previous step</a>
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -130,8 +84,10 @@
                                     <tr>
                                         <td><a href="{{ $item->slug }}" target="_blank">{{ $item->name }}</a></td>
                                         <td>{{ $item->quantity }}</td>
-                                        <td>&euro;{{ number_format(Cart::itemDiscountPrice($item->hash), 2, ',', '.') }}</td>
-                                        <td>&euro;{{ number_format(Cart::itemDiscountPrice($item->hash) * $item->quantity, 2, ',', '.') }}</td>
+                                        <td>
+                                            &euro;{{ number_format(Cart::itemDiscountPrice($item->hash), 2, ',', '.') }}</td>
+                                        <td>
+                                            &euro;{{ number_format(Cart::itemDiscountPrice($item->hash) * $item->quantity, 2, ',', '.') }}</td>
                                     </tr>
                                 @endforeach
                                 <tr>

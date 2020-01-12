@@ -21,7 +21,7 @@
                     <a href="#" class="nav-link">Contact</a>
                 </li>
                 <li class="nav-item">
-{{--                    <a href="{{ route('cart.index') }}" class="nav-link"><i class="fa fa-shopping-cart"></i> ({{ Cart::getContent()->count() }})</a>--}}
+                    <a href="{{ route('cart.index') }}" class="nav-link"><i class="fa fa-shopping-cart"></i> ({{ Cart::count() }})</a>
                 </li>
             </ul>
         </div>
