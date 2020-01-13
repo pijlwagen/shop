@@ -20,6 +20,7 @@ class CreateOrdersTable extends Migration
             $table->string('phone', 256)->nullable();
             $table->string('email', 256);
             $table->tinyInteger('status');
+            $table->string('hash', 32);
             $table->timestamps();
         });
     }

@@ -30,6 +30,7 @@ class CategoryController extends Controller
         $request->validate([
             'name' => 'required|max:256',
             'image' => 'image',
+            'slug' => 'required|string|max:256',
             'seo-image' => 'image'
         ]);
 
@@ -41,6 +42,7 @@ class CategoryController extends Controller
             'name' => $request->input('name'),
             'description' => $request->input('description'),
             'hidden' => !!$request->input('hide'),
+            'slug' => $request->input('slug'),
             'image' => $image ?? null,
         ]);
 
@@ -76,7 +78,8 @@ class CategoryController extends Controller
         $request->validate([
             'name' => 'required|max:256',
             'image' => 'image',
-            'seo-image' => 'image'
+            'seo-image' => 'image',
+            'slug' => 'required|string|max:256'
         ]);
 
         if ($request->has('image')) {
@@ -88,6 +91,7 @@ class CategoryController extends Controller
             'description' => $request->input('description'),
             'hidden' => !!$request->input('hide'),
             'image' => $image ?? null,
+            'slug' => $request->input('slug')
         ]);
 
         if ($request->has('seo-title') || $request->has('seo-keywords') || $request->has('seo-description') || $request->has('seo-image')) {

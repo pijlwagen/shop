@@ -24,16 +24,29 @@
                             <div class="tab-content">
                                 <div class="tab-pane fade show active" id="general" role="tabpanel"
                                      aria-labelledby="general-tab">
-                                    <div class="form-group">
-                                        <label for="name"><i class="fa fa-tag"></i> Name</label>
-                                        <input type="text" name="name" id="name" placeholder="My Category"
-                                               class="form-control @error('name') is-invalid @enderror"
-                                               v-model="name">
-                                        @error('name')
-                                        <div class="invalid-feedback" role="alert">
-                                            {{ $message }}
+                                    <div class="form-group row">
+                                        <div class="col-md-6">
+                                            <label for="name"><i class="fa fa-tag"></i> Name</label>
+                                            <input type="text" name="name" id="name" placeholder="My Category"
+                                                   class="form-control @error('name') is-invalid @enderror"
+                                                   v-model="name">
+                                            @error('name')
+                                            <div class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
                                         </div>
-                                        @enderror
+                                        <div class="col-md-6">
+                                            <label for="slug"><i class="fa fa-search"></i> Slug</label>
+                                            <input type="text" name="slug" id="slug" placeholder="category-name"
+                                                   class="form-control @error('slug') is-invalid @enderror"
+                                                   value="{{ old('slug') }}">
+                                            @error('slug')
+                                            <div class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="description"><i class="fa fa-pen-fancy"></i> Description</label>

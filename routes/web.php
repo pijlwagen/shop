@@ -9,6 +9,17 @@ Route::get('test', function () {
 
 
 /**
+ * Category Routes
+ */
+
+Route::group([
+    'namespace' => 'Product',
+    'prefix' => '/category'
+], function () {
+    Route::get('/{slug}', 'CategoryController@index')->name('categories.index');
+});
+
+/**
  * Product routes
  */
 Route::group([

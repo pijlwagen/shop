@@ -14,11 +14,17 @@ class Category extends Model
         'name',
         'description',
         'hidden',
-        'image'
+        'image',
+        'slug'
     ];
 
     public function seo()
     {
         return $this->hasOne(CategorySeo::class);
+    }
+
+    public function products()
+    {
+        return $this->hasManyThrough(Product::class, ProductCategory::class, 'product_id', 'id', 'id', 'category_id');
     }
 }

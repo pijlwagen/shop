@@ -21,6 +21,7 @@ class CreatePaymentsTable extends Migration
             $table->foreign('address_id')->references('id')->on('addresses');
             $table->string('method');
             $table->string('amount');
+            $table->string('hash', 32);
             $table->timestamps();
         });
     }

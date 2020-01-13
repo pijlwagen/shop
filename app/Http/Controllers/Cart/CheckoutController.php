@@ -7,6 +7,10 @@ namespace App\Http\Controllers\Cart;
 use App\Http\Controllers\Controller;
 use App\Classes\Cart\Cart;
 use App\Models\Address;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\OrderItemOption;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Session;
@@ -37,9 +41,11 @@ class CheckoutController extends Controller
     {
         $request->validate([
             'email' => 'required|email|max:256',
+            'phone' => 'nullable|email|max:256',
             'first-name' => 'required|string|max:256',
             'last-name' => 'required|string|max:256',
             'address' => 'required|string|max:512',
+            'address_extra' => 'nullable|string|max:512',
             'city' => 'required|string|max:512',
             'zip' => 'required|string|max:16',
             'country' => [
@@ -49,10 +55,10 @@ class CheckoutController extends Controller
                 ])
             ]
         ]);
-//
-//        dd($validator);
+
         $cookie = Cookie::get('address');
         $address = Address::where('hash', $cookie)->first();
+
         if ($address) {
             $address->update([
                 'first_name' => $request->input('first-name'),
@@ -85,7 +91,6 @@ class CheckoutController extends Controller
             'email' => $request->input('email'),
             'phone' => $request->input('phone'),
         ]);
-
 
 
         return redirect()->route('cart.checkout.shipping');
@@ -122,6 +127,7 @@ class CheckoutController extends Controller
             'first-name' => 'required_if:billing-address,custom|string|max:256',
             'last-name' => 'required_if:billing-address,custom|string|max:256',
             'address' => 'required_if:billing-address,custom|string|max:512',
+            'address_extra' => 'nullable|string|max:512',
             'city' => 'required_if:billing-address,custom|string|max:512',
             'zip' => 'required_if:billing-address,custom|string|max:16',
             'country' => [
@@ -152,6 +158,52 @@ class CheckoutController extends Controller
         }
 
         if (!$billingAddress || !$shippingAddress) return redirect()->route('cart.checkout');
-        
+
+        $order = Order::create([
+            'address_id' => $shippingAddress->id,
+            'email' => Session::get('contact')['email'],
+            'phone' => Session::get('contact')['phone'],
+            'status' => 0,
+            'hash' => md5(Carbon::now()->timestamp . $billingAddress->id)
+        ]);
+
+        $total = Cart::subTotal();
+
+        foreach (Cart::all() as $item) {
+            $price = Cart::itemDiscountPrice($item->hash);
+            $total += $price;
+            $orderItem = OrderItem::create([
+                'order_id' => $order->id,
+                'name' => $item->name,
+                'slug' => $item->slug,
+                'quantity' => $item->quantity,
+                'price' => $price
+            ]);
+
+            foreach ($item->options as $option) {
+                OrderItemOption::create([
+                    'order_item_id' => $orderItem->id,
+                    'name' => $option->title,
+                    'value' => $option->value,
+                    'increment' => $option->increment
+                ]);
+            }
+        }
+
+        $payment = $this->mollie->payments->create([
+            'amount' => [
+                'currency' => 'EUR',
+                'value' => number_format($total, 2, '.', ',')
+            ],
+            'description' => "Payment for order {$order->hash} at " . config('app.name'),
+            'redirectUrl' => 'https://fortbots.xyz',
+            'method' => $request->input('payment-method'),
+            'metadata' => [
+                'order_id' => $order->id,
+                'address_id' => $billingAddress->id,
+            ]
+        ]);
+
+        return redirect($payment->getCheckoutUrl());
     }
 }
