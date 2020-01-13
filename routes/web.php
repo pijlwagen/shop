@@ -47,6 +47,13 @@ Route::group([
     Route::post('/update', 'CartController@update')->name('cart.update');
 });
 
+Route::group([
+    'namespace' => 'Order',
+    'prefix' => '/order'
+], function () {
+    Route::get('/{hash}', 'OrderController@view')->name('order.view');
+});
+
 /**
  * Authentication Routes
  */

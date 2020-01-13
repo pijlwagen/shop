@@ -94,18 +94,17 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <div class="col-12">
-                                            <label for="description"><i class="fa fa-pen-fancy"></i> Description</label>
-                                            <textarea name="description" id="description" cols="30" rows="5"
-                                                      v-model="description"
-                                                      class="form-control @error('description') is-invalid @enderror">{{ old('description', $product->description) }}</textarea>
-                                            @error('description')
-                                            <div class="invalid-feedback" role="alert">
-                                                {{ $message }}
-                                            </div>
-                                            @enderror
+                                    <div class="form-group mb-3">
+                                        <label for="description"><i class="fa fa-pen-fancy"></i> Description</label>
+                                        <div id="quill-editor">
+                                            {!! old('description', $product->description) !!}
                                         </div>
+                                        <input type="text" name="description" id="description" hidden>
+                                        @error('description')
+                                        <small class="text-danger" role="alert">
+                                            {{ $message }}
+                                        </small>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
                                         <label for="categories"><i class="fa fa-list-ul"></i> Categories</label>
@@ -305,7 +304,8 @@
                                                             <input
                                                                 v-bind:name="'option[' + index + '][values]['+child+'][value]'"
                                                                 v-bind:class="{'is-invalid': !custom[index].values[child].value}"
-                                                                v-bind:id="'title-value-' + index + 'child-' + child" class="form-control"
+                                                                v-bind:id="'title-value-' + index + 'child-' + child"
+                                                                class="form-control"
                                                                 v-model="custom[index].values[child].value">
                                                             <div class="invalid-feedback"
                                                                  v-if="!custom[index].values[child].value"
@@ -315,10 +315,12 @@
                                                         </div>
                                                         <div class="col-md-3">
                                                             <label v-bind:for="'title-price-' + index">Value
-                                                                price <small class="text-muted">(optional)</small></label>
+                                                                price <small
+                                                                    class="text-muted">(optional)</small></label>
                                                             <input
                                                                 v-bind:name="'option[' + index + '][values]['+child+'][increment]'"
-                                                                v-bind:id="'title-price-' + index + 'child-' + child" class="form-control"
+                                                                v-bind:id="'title-price-' + index + 'child-' + child"
+                                                                class="form-control"
                                                                 v-model="custom[index].values[child].increment">
                                                         </div>
                                                         <div class="col-md-2 d-flex">
@@ -337,7 +339,8 @@
                                                             <label><% custom[index].title || 'Unnamed option' %></label>
                                                             <select class="form-control">
                                                                 <option v-for="(value, child) in custom[index].values">
-                                                                    <% value.value %> <% value.increment ? '&euro;' + value.increment : '' %>
+                                                                    <% value.value %> <% value.increment ? '&euro;' +
+                                                                    value.increment : '' %>
                                                                 </option>
                                                             </select>
                                                         </div>
@@ -443,7 +446,9 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <button class="btn btn-danger w-100" type="button" v-on:click="removeDiscount(index)">Delete</button>
+                                                <button class="btn btn-danger w-100" type="button"
+                                                        v-on:click="removeDiscount(index)">Delete
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -459,7 +464,7 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group">
-                                <button class="btn btn-primary w-100">
+                                <button class="btn btn-primary w-100" id="save">
                                     Save
                                 </button>
                             </div>
@@ -477,12 +482,10 @@
             el: '#app',
             data: {
                 name: "",
-                description: "",
                 seo: {
                     title: '',
                     titleSameAsName: true,
                     description: '',
-                    descriptionSameAsDescription: true,
                 },
                 custom: [],
                 types: [
@@ -513,14 +516,9 @@
                     if (!this.seo.titleSameAsName) return;
                     this.seo.title = this.name;
                 },
-                description: function () {
-                    if (!this.seo.descriptionSameAsDescription) return;
-                    this.seo.description = this.description;
-                },
                 seo: {
                     handler: function () {
                         if (this.seo.titleSameAsName) this.seo.title = this.name;
-                        if (this.seo.descriptionSameAsDescription) this.seo.description = this.description;
                     },
                     deep: true,
                 }
@@ -563,12 +561,21 @@
             created: function () {
                 this.custom = JSON.parse('{{ json_encode(old('custom', $product->options->map(function ($x) {return ['title' => $x->title, 'type' => $x->type, 'values' => $x->values->map(function ($x) {return ['value' => $x->value, 'increment' => $x->increment ?? ''];})];}))) }}'.replace(/&quot;/g, '"'));
                 this.name = "{{ old('name', $product->name) }}";
-                this.description = "{{ old('description', $product->description) }}";
                 this.seo.title = "{{ old('seo-title', $product->seo->title ?? '') }}";
                 this.seo.description = "{{ old('seo-description', $product->seo->description ?? '') }}";
                 this.discounts = JSON.parse('{{ json_encode(old('discount', $product->discounts->map(function($x){return ['type' => $x->type, 'amount' => $x->amount, 'start' => ['date' => \Carbon\Carbon::parse($x->active_from)->format('Y-m-d'), 'time' => \Carbon\Carbon::parse($x->active_from)->format('H:i')], 'end' => ['date' => \Carbon\Carbon::parse($x->active_until)->format('Y-m-d'), 'time' => \Carbon\Carbon::parse($x->active_until)->format('H:i')]];}))) }}'.replace(/&quot;/g, '"'));
             },
             delimiters: ['<%', '%>']
         });
+
+        var editor = new Quill('#quill-editor', {
+            theme: 'snow',
+        });
+
+        $('#save').on('click', function () {
+            $('#description').val(editor.root.innerHTML)
+        });
+
+
     </script>
 @endpush

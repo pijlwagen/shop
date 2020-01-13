@@ -1,7 +1,5 @@
-require('./bootstrap');
+// require('./bootstrap');
 
-// window.Vue = require('vue');
-//
-// const app = new Vue({
-//     el: '#app'
-// });
+
+// var container = document.getElementById('editor');
+// var editor = new Quill(container);

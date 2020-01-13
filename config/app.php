@@ -226,6 +226,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Cart' => App\Classes\Cart\Cart::class,
+        'Helper' => App\Classes\Helper\Helper::class,
     ],
 
 ];

@@ -50,10 +50,9 @@ class Cart
             $price = $item->price;
             if ($item->discount) {
                 $price = self::itemDiscountPrice($item->hash);
-            } else {
-                foreach ($item->options as $option) {
-                    $price += $option->increment ?? 0;
-                }
+            }
+            foreach ($item->options as $option) {
+                $price += $option->increment ?? 0;
             }
             $total += $price * $item->quantity;
         }

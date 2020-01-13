@@ -6,6 +6,10 @@ body {
   font-size: 18px;
 }
 
+.order-table th {
+  padding-right: 12.5px;
+}
+
 #app {
   display: -webkit-box;
   display: flex;

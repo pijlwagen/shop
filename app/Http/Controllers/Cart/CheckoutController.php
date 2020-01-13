@@ -10,6 +10,7 @@ use App\Models\Address;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\OrderItemOption;
+use App\Models\Payment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
@@ -171,7 +172,6 @@ class CheckoutController extends Controller
 
         foreach (Cart::all() as $item) {
             $price = Cart::itemDiscountPrice($item->hash);
-            $total += $price;
             $orderItem = OrderItem::create([
                 'order_id' => $order->id,
                 'name' => $item->name,
@@ -190,20 +190,34 @@ class CheckoutController extends Controller
             }
         }
 
-        $payment = $this->mollie->payments->create([
-            'amount' => [
-                'currency' => 'EUR',
-                'value' => number_format($total, 2, '.', ',')
-            ],
-            'description' => "Payment for order {$order->hash} at " . config('app.name'),
-            'redirectUrl' => 'https://fortbots.xyz',
+        if ($request->input('payment-method') === 'creditcard') {
+            $total += ($total / 100 * 2);
+        }
+
+//        $payment = $this->mollie->payments->create([
+//            'amount' => [
+//                'currency' => 'EUR',
+//                'value' => number_format($total, 2, '.', ',')
+//            ],
+//            'description' => "Payment for order {$order->hash} at " . config('app.name'),
+//            'redirectUrl' => route('order.view', $order->hash);,
+//            'method' => $request->input('payment-method'),
+//            'metadata' => [
+//                'order_id' => $order->id,
+//                'address_id' => $billingAddress->id,
+//            ]
+//        ]);
+
+//        return redirect($payment->getCheckoutUrl());
+
+        Payment::create([
+            'hash' => md5(Carbon::now()->timestamp . $order->id),
+            'amount' => $total,
             'method' => $request->input('payment-method'),
-            'metadata' => [
-                'order_id' => $order->id,
-                'address_id' => $billingAddress->id,
-            ]
+            'order_id' => $order->id,
+            'address_id' => $billingAddress->id,
         ]);
 
-        return redirect($payment->getCheckoutUrl());
+        return redirect()->route('order.view', $order->hash);
     }
 }

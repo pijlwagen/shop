@@ -17,7 +17,9 @@
     <link rel="stylesheet" href="{{ asset('libs/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('libs/fontawesome/css/all.css') }}">
     <link rel="stylesheet" href="{{ asset('libs/tagsinput.css') }}">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    @stack('css')
 </head>
 <body>
 <div id="app">
@@ -41,8 +43,10 @@
 <script src="{{ asset('libs/jquery.js') }}"></script>
 <script src="{{ asset('libs/popper.min.js') }}"></script>
 <script src="{{ asset('libs/bootstrap/js/bootstrap.min.js') }}"></script>
-<script src="{{ asset('libs/vue.min.js') }}"></script>
 <script src="{{ asset('libs/tagsinput.js') }}"></script>
+<script src="{{ asset('libs/vue.min.js') }}"></script>
+<script src="{{ asset('libs/quill/vue-quill-editor.js') }}"></script>
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 @stack('js')
 </body>
 </html>

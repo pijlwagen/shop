@@ -111,6 +111,7 @@
                     </div>
                     <div class="form-group">
                         <button class="btn btn-primary float-right">Next step</button>
+                        <a href="{{ route('cart.index') }}" class="btn btn-primary float-left">Back to cart</a>
                     </div>
                 </div>
                 <div class="col-lg-4">

@@ -183,7 +183,7 @@ class ProductController extends Controller
                 'description' => $request->input('description')
             ]);
 
-            $product->categories()->delete();
+            ProductCategory::where('product_id', $product->id)->delete();
 
             foreach ($request->input('categories') ?? [] as $category) {
                 ProductCategory::create([
@@ -215,7 +215,7 @@ class ProductController extends Controller
                 }
             }
 
-            $product->discounts()->delete();
+            ProductDiscount::where('product_id', $product->id)->delete();
 
             if ($request->has('discount')) {
                 foreach ($request->input('discount') as $discount) {
@@ -243,7 +243,7 @@ class ProductController extends Controller
                 }
             }
 
-            $product->options()->delete();
+            ProductOption::where('product_id', $product->id)->delete();
 
             if ($request->has('option')) {
                 foreach ($request->input('option') as $option) {

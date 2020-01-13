@@ -19,4 +19,9 @@ class OrderItem extends Model
     ];
 
     public $timestamps = false;
+
+    public function options()
+    {
+        return $this->hasMany(OrderItemOption::class);
+    }
 }

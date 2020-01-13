@@ -24,7 +24,7 @@ class CartController extends Controller
 
         $cart = Cart::add($product, $request->input('quantity'), $request->input('option') ?? []);
         $request->session()->put('cart', json_encode($cart));
-        return response()->json(['success' => true, 'cart' => $cart]);
+        return redirect()->back()->with('info', "<b>{$product->name}</b> has been added to your cart.");
     }
 
     public function index()

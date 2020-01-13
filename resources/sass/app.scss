@@ -6,6 +6,12 @@ body {
     font-size: 18px;
 }
 
+.order-table {
+    th {
+        padding-right: 12.5px;
+    }
+}
+
 #app {
     display: flex;
     min-height: 100vh;
