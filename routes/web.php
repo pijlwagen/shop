@@ -7,6 +7,23 @@ Route::get('test', function () {
 //    print_r(Session::get('cart'));
 });
 
+/**
+ * Account Routes
+ */
+
+Route::group([
+    'prefix' => '/account',
+    'namespace' => 'Account',
+    'middleware' => [
+        'auth'
+    ]
+], function () {
+    Route::get('/', 'AccountController@index')->name('account.index');
+    Route::get('/orders', 'AccountController@orders')->name('account.orders');
+    Route::post('/address', 'AccountController@address')->name('account.address');
+    Route::post('/save', 'AccountController@update')->name('account.save');
+});
+
 
 /**
  * Category Routes

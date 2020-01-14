@@ -20,8 +20,27 @@
                 <li class="nav-item">
                     <a href="#" class="nav-link">Contact</a>
                 </li>
+                @guest
+                    <li class="nav-item">
+                        <a href="{{ route('login') }}" class="nav-link">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('register') }}" class="nav-link">Register</a>
+                    </li>
+                @else
+                    <li class="nav-item">
+                        <a href="{{ route('account.index') }}" class="nav-link">Account</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); $('#logout-form').submit()">Logout</a>
+                        <form action="{{ route('logout') }}" method="POST" id="logout-form" hidden>
+                            @csrf
+                        </form>
+                    </li>
+                @endif
                 <li class="nav-item">
-                    <a href="{{ route('cart.index') }}" class="nav-link"><i class="fa fa-shopping-cart"></i> ({{ Cart::count() }})</a>
+                    <a href="{{ route('cart.index') }}" class="nav-link">Cart
+                        ({{ Cart::count() }})</a>
                 </li>
             </ul>
         </div>

@@ -2,7 +2,9 @@
 
 namespace App;
 
+use App\Models\Address;
 use App\Models\Role;
+use App\Models\UserAddress;
 use App\Models\UserRole;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -32,5 +34,10 @@ class User extends Authenticatable
     public function isAdmin()
     {
         return $this->roles()->get()->contains('name', 'Administrator');
+    }
+
+    public function address()
+    {
+        return $this->hasOneThrough(Address::class, UserAddress::class, 'user_id', 'id', 'id', 'address_id');
     }
 }

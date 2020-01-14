@@ -3,9 +3,12 @@
 namespace App\Classes\Cart;
 
 use App\Classes\Cart\Item;
+use App\Models\CartJSON;
 use App\Models\Product;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 class Cart
 {
@@ -22,6 +25,7 @@ class Cart
                 $cart[$item->hash] = $item;
             }
         }
+//        self::save($cart);
         return $cart;
     }
 
@@ -108,7 +112,34 @@ class Cart
             }
         }
         if (count($errors) > 0) Session::now('warning', $errors);
+
+//        self::save($json);
         Session::put('cart', json_encode($json));
+    }
+
+    public static function save($cart)
+    {
+        $cookie = Cookie::get('cart');
+        if (!$cookie) {
+            $cart = CartJSON::create([
+                'hash' => Str::random(48),
+                'payload' => json_encode($cart),
+            ]);
+            Cookie::queue('cart', $cart->hash, 241920);
+        } else {
+            $cart = CartJSON::find($cookie);
+            if ($cart) {
+                $cart->update([
+                    'payload' => json_encode($cart),
+                ]);
+            } else {
+                $cart = CartJSON::create([
+                    'hash' => Str::random(48),
+                    'payload' => json_encode($cart),
+                ]);
+                Cookie::queue('cart', $cart->hash, 241920);
+            }
+        }
     }
 
     public static function update($newValues)

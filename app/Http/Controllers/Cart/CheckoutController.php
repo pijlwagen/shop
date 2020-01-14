@@ -11,8 +11,10 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\OrderItemOption;
 use App\Models\Payment;
+use App\Models\UserAddress;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
@@ -31,7 +33,15 @@ class CheckoutController extends Controller
 
     public function index()
     {
-        $address = Address::where('hash', Cookie::get('address'))->first();
+        $address = null;
+        if (Auth::user()) {
+            $address = Auth::user()->address()->first();
+        }
+
+        if (!$address && Cookie::has('address')) {
+            $address = Address::where('hash', Cookie::get('address'))->first();
+        }
+
         return view('cart.checkout', [
             'cart' => Cart::all(),
             'address' => $address
@@ -58,7 +68,11 @@ class CheckoutController extends Controller
         ]);
 
         $cookie = Cookie::get('address');
-        $address = Address::where('hash', $cookie)->first();
+        if (Auth::check()) {
+            $address = Auth::user()->address()->first();
+        } else {
+            $address = Address::where('hash', $cookie)->first();
+        }
 
         if ($address) {
             $address->update([
@@ -72,6 +86,9 @@ class CheckoutController extends Controller
                 'type' => 0, // shippping
                 'hash' => Str::random(32)
             ]);
+            if (!Auth::check()) {
+                Cookie::queue('address', $address->hash, 241920);
+            }
         } else {
             $address = Address::create([
                 'first_name' => $request->input('first-name'),
@@ -84,23 +101,34 @@ class CheckoutController extends Controller
                 'type' => 0, // shippping
                 'hash' => Str::random(32)
             ]);
+
+            if (Auth::check()) {
+                UserAddress::create([
+                    'user_id' => Auth::user()->id,
+                    'address_id' => $address->id,
+                ]);
+            } else {
+                Cookie::queue('address', $address->hash, 241920);
+            }
         }
 
-        Cookie::queue('address', $address->hash, 241920);
 
         Session::put('contact', [
             'email' => $request->input('email'),
             'phone' => $request->input('phone'),
         ]);
 
-
         return redirect()->route('cart.checkout.shipping');
     }
 
     public function shipping()
     {
-        if (!Session::has('contact') || Session::has('adddress')) return redirect()->route('cart.checkout');
-        $address = Address::where('hash', Cookie::get('address'))->first();
+        if (!Session::has('contact')) return redirect()->route('cart.checkout');
+        if (Auth::check()) {
+            $address = Auth::user()->address()->first();
+        } else {
+            $address = Address::where('hash', Cookie::get('address'))->first();
+        }
         if (!$address) return redirect()->route('cart.checkout');
 
         return view('cart.shipping', [
@@ -111,8 +139,12 @@ class CheckoutController extends Controller
 
     public function payment()
     {
-        if (!Session::has('contact') || Session::has('adddress')) return redirect()->route('cart.checkout');
-        $address = Address::where('hash', Cookie::get('address'))->first();
+        if (!Session::has('contact')) return redirect()->route('cart.checkout');
+        if (Auth::check()) {
+            $address = Auth::user()->address()->first();
+        } else {
+            $address = Address::where('hash', Cookie::get('address'))->first();
+        }
         if (!$address) return redirect()->route('cart.checkout');
 
         return view('cart.payment', [
@@ -123,7 +155,7 @@ class CheckoutController extends Controller
 
     public function handle(Request $request)
     {
-        if (!Session::has('contact') || Session::has('adddress')) return redirect()->route('cart.checkout');
+        if (!Session::has('contact')) return redirect()->route('cart.checkout');
         $request->validate([
             'first-name' => 'required_if:billing-address,custom|string|max:256',
             'last-name' => 'required_if:billing-address,custom|string|max:256',
@@ -140,7 +172,11 @@ class CheckoutController extends Controller
         ]);
 
         $billingAddress = null;
-        $shippingAddress = Address::where('hash', Cookie::get('address'))->first();
+        if (Auth::check()) {
+            $shippingAddress = Auth::user()->address()->first();
+        } else {
+            $shippingAddress = Address::where('hash', Cookie::get('address'))->first();
+        }
 
         if ($request->input('billing-address') === 'custom') {
             $billingAddress = Address::create([
