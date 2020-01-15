@@ -24,6 +24,14 @@ Route::group([
     Route::post('/save', 'AccountController@update')->name('account.save');
 });
 
+//Route::get('/email', function () {
+//    $order = \App\Models\Order::with(['payment', 'address', 'items' => function ($query) {
+//        $query->with('options');
+//    }])->first();
+//    return view('mail.order.confirmation', [
+//        'order' => $order
+//    ]);
+//});
 
 /**
  * Category Routes

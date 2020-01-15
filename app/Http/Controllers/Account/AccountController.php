@@ -46,7 +46,13 @@ class AccountController extends Controller
 
     public function orders()
     {
-        return view();
+        $user = User::with(['orders' => function ($query) {
+            return $query->with(['items', 'payment']);
+        }])->find(Auth::user()->id);
+
+        return view('account.orders', [
+            'user' => $user,
+        ]);
     }
 
     public function address(Request $request)

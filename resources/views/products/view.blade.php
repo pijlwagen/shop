@@ -66,12 +66,12 @@
                                     stock)</small></label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <button class="btn btn-secondary"><i class="fa fa-minus"></i></button>
+                                    <button class="btn btn-secondary" v-on:click="event.preventDefault(); quantity--"><i class="fa fa-minus"></i></button>
                                 </div>
                                 <input type="number" class="form-control" id="quantity" name="quantity" value="1"
                                        v-model="quantity" v-bind:class="{'is-invalid': errors.has('quantity')}">
                                 <div class="input-group-append">
-                                    <button class="btn btn-secondary"><i class="fa fa-plus"></i></button>
+                                    <button class="btn btn-secondary" v-on:click="event.preventDefault(); quantity++"><i class="fa fa-plus"></i></button>
                                 </div>
                             </div>
                             <small class="text-danger" v-if="errors.has('quantity')">
@@ -107,6 +107,7 @@
                     if (!isNaN(this.quantity)) {
                         if (this.quantity > this.product.stock) this.errors.set('quantity', 'Unfortunately we don\'t have enough of this product left in stock.');
                         else if (this.errors.has('quantity')) this.errors.delete('quantity');
+                        if (this.quantity < 1) this.quantity = 1;
                     }
                 },
             },

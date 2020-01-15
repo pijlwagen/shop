@@ -12,11 +12,12 @@
                         </div>
                         <div class="card-body">
                             @if (Cart::count() === 0)
-                            <div class="d-flex text-center">
-                                <div class="m-auto">
-                                    Your cart is empty
+                                <div class="d-flex text-center">
+                                    <div class="m-auto">
+                                        Your cart is empty <br>
+                                        <a href="{{ route('products.index') }}">Browse products</a>
+                                    </div>
                                 </div>
-                            </div>
                             @else
                                 @foreach($cart as $item)
                                     <div class="row">
@@ -94,10 +95,16 @@
                                     &euro;{{ number_format(Cart::subTotal(), 2, ',', '.') }}
                                 </div>
                             </div>
-                            <button class="btn btn-primary w-100 mb-3" v-bind:disabled="errors.size != 0"
-                                    v-bind:class="{disabled: errors.size != 0}">Update cart
-                            </button>
-                            <a href="{{ route('cart.checkout') }}" class="btn btn-success w-100">Checkout</a>
+                            @if (Cart::count() === 0)
+                                <button class="btn btn-primary w-100 mb-3 disabled" disabled>Update cart
+                                </button>
+                                <a href="{{ route('cart.checkout') }}" class="btn btn-success w-100 disabled" disabled>Checkout</a>
+                            @else
+                                <button class="btn btn-primary w-100 mb-3" v-bind:disabled="errors.size != 0"
+                                        v-bind:class="{disabled: errors.size != 0}">Update cart
+                                </button>
+                                <a href="{{ route('cart.checkout') }}" class="btn btn-success w-100">Checkout</a>
+                            @endif
                         </div>
                     </div>
                 </div>

@@ -41,7 +41,7 @@ class CartController extends Controller
             'quantity.*' => 'required|numeric|min:0|max:50'
         ]);
 
-        Cart::update($request->input('quantity'));
+        Cart::update($request->input('quantity') ?? []);
         return redirect()->back();
     }
 }

@@ -3,8 +3,10 @@
 namespace App;
 
 use App\Models\Address;
+use App\Models\Order;
 use App\Models\Role;
 use App\Models\UserAddress;
+use App\Models\UserOrder;
 use App\Models\UserRole;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -19,12 +21,17 @@ class User extends Authenticatable
     ];
 
     protected $hidden = [
-        'password', 'remember_token',
-    ];
+  'password', 'remember_token',
+];
 
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function orders()
+    {
+        return $this->hasManyThrough(Order::class, UserOrder::class, 'user_id', 'id', 'id', 'order_id');
+    }
 
     public function roles()
     {

@@ -6,12 +6,14 @@ namespace App\Http\Controllers\Cart;
 
 use App\Http\Controllers\Controller;
 use App\Classes\Cart\Cart;
+use App\Mail\OrderConfirmation;
 use App\Models\Address;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\OrderItemOption;
 use App\Models\Payment;
 use App\Models\UserAddress;
+use App\Models\UserOrder;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -245,6 +247,16 @@ class CheckoutController extends Controller
 //        ]);
 
 //        return redirect($payment->getCheckoutUrl());
+
+        $mail = new OrderConfirmation($order);
+        $mail->to(Session::get('contact')['email'])
+
+        if (Auth::check()) {
+            UserOrder::create([
+               'user_id' => Auth::user()->id,
+               'order_id' => $order->id,
+            ]);
+        }
 
         Payment::create([
             'hash' => md5(Carbon::now()->timestamp . $order->id),

@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container-fluid px-md-5">
-        <h1 class="text-center">Order #432{{ $order->id }}</h1>
+        <h1 class="text-center">Order #{{ 4322 + $order->id }}</h1>
         <hr class="my-5">
         <div class="row mb-5">
             <div class="col-md-auto mb-5">
