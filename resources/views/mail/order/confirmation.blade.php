@@ -13,8 +13,7 @@
         <br><br>
 
         You will receive an email when we process your order. If this transaction is unauthorized please contact our
-        support at
-        <a href="#">{{ config('app.mail') }}</a>
+        support at <a href="#">{{ config('app.mail') }}</a>
         <br><br>
 
         <strong style="font-size: 17px">Order Items</strong><br>
@@ -29,9 +28,11 @@
             </thead>
             @foreach($order->items as $item)
                 <tr>
-                    <td style="width:100%"><a href="{{ route('products.view', $item->slug) }}" target="_blank" style="color: #2a2a2a; text-decoration: none">{{ $item->name }}</a></td>
+                    <td style="width:100%"><a href="{{ route('products.view', $item->slug) }}" target="_blank"
+                                              style="color: #2a2a2a; text-decoration: none">{{ $item->name }}</a></td>
                     <td style="min-width: 20px; padding-right: 10px">{{ $item->quantity }}</td>
-                    <td style="min-width: 20px; padding-right: 10px">&euro;{{ number_format($item->price, 2, ',', '.') }}</td>
+                    <td style="min-width: 20px; padding-right: 10px">
+                        &euro;{{ number_format($item->price, 2, ',', '.') }}</td>
                     <td>&euro;{{ number_format($item->price * $item->quantity, 2, ',', '.') }}</td>
                 </tr>
             @endforeach
@@ -98,6 +99,5 @@
         {{ $order->address->address }}<br>
         {{ $order->address->zip }} {{ $order->address->city }}<br>
         {{ $order->address->country }}<br>
-    </div>
     </div>
 @stop

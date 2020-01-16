@@ -28,11 +28,19 @@
                         <a href="{{ route('register') }}" class="nav-link">Register</a>
                     </li>
                 @else
-                    <li class="nav-item">
-                        <a href="{{ route('account.index') }}" class="nav-link">Account</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="account-dropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Account
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="account-dropdown">
+                            <a class="dropdown-item" href="{{ route('account.index') }}">Personal information</a>
+                            <a class="dropdown-item" href="{{ route('account.orders') }}">Orders</a>
+                        </div>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); $('#logout-form').submit()">Logout</a>
+                        <a href="{{ route('logout') }}" class="nav-link"
+                           onclick="event.preventDefault(); $('#logout-form').submit()">Logout</a>
                         <form action="{{ route('logout') }}" method="POST" id="logout-form" hidden>
                             @csrf
                         </form>
@@ -42,6 +50,22 @@
                     <a href="{{ route('cart.index') }}" class="nav-link">Cart
                         ({{ Cart::count() }})</a>
                 </li>
+                @if (Auth::check())
+                    @if (Auth::user()->isAdmin())
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="admin-dropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Administrator
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="admin-dropdown">
+                                <a class="dropdown-item" href="#">Orders</a>
+                                <a class="dropdown-item" href="{{ route('admin.products.index') }}">Products</a>
+                                <a class="dropdown-item" href="{{ route('admin.categories.index') }}">Categories</a>
+                                <a class="dropdown-item" href="{{ route('admin.users.index') }}">Users</a>
+                            </div>
+                        </li>
+                    @endif
+                @endif
             </ul>
         </div>
     </div>

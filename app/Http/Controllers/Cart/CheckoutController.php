@@ -18,6 +18,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Mollie\Api\MollieApiClient;
@@ -248,9 +249,6 @@ class CheckoutController extends Controller
 
 //        return redirect($payment->getCheckoutUrl());
 
-        $mail = new OrderConfirmation($order);
-        $mail->to(Session::get('contact')['email'])
-
         if (Auth::check()) {
             UserOrder::create([
                'user_id' => Auth::user()->id,
@@ -265,6 +263,8 @@ class CheckoutController extends Controller
             'order_id' => $order->id,
             'address_id' => $billingAddress->id,
         ]);
+
+//        Mail::to(Session::get('contact')['email'])->send(new OrderConfirmation($order));
 
         return redirect()->route('order.view', $order->hash);
     }

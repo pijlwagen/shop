@@ -2,20 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f202e302-006d-48cb-9b34-c043a5949a6a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/Models/UserOrder.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/account/orders.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/layouts/mail.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/mail/order/confirmation.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/Order/OrderController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/admin/orders/edit.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/admin/orders/index.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/snippets/order-table.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Account/AccountController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Account/AccountController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Cart/CartController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Cart/CartController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Cart/CheckoutController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Cart/CheckoutController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/app.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/cart/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/cart/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/order/view.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/order/view.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/products/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/products/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/products/view.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/products/view.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Product/ProductController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Product/ProductController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Mail/OrderConfirmation.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Mail/OrderConfirmation.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Order.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Order.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/mail/order/confirmation.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mail/order/confirmation.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/partials/header.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/partials/header.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -138,7 +135,7 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/views/admin/orders" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -149,15 +146,15 @@
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\xampp\htdocs\shop\app\Models" />
-      <recent name="C:\xampp\htdocs\shop\resources\views\account" />
-      <recent name="C:\xampp\htdocs\shop\public\libs\quill" />
-      <recent name="C:\xampp\htdocs\shop\public\css" />
-      <recent name="C:\xampp\htdocs\shop\resources\views\categories" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\xampp\htdocs\shop\app\Classes\Cart" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\shop\resources\views\admin\orders" />
+      <recent name="C:\xampp\htdocs\shop\app\Http\Controllers\Admin\Order" />
+      <recent name="C:\xampp\htdocs\shop\resources\views\snippets" />
+      <recent name="C:\xampp\htdocs\shop\app\Models" />
+      <recent name="C:\xampp\htdocs\shop\resources\views\account" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -201,6 +198,9 @@
       <workItem from="1579016870514" duration="5117000" />
       <workItem from="1579077750196" duration="5719000" />
       <workItem from="1579088890113" duration="4798000" />
+      <workItem from="1579094829944" duration="1702000" />
+      <workItem from="1579166342242" duration="6091000" />
+      <workItem from="1579176153567" duration="878000" />
     </task>
     <servers />
   </component>

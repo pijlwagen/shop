@@ -32,4 +32,18 @@ class Order extends Model
     {
         return $this->hasOne(Address::class, 'id', 'address_id');
     }
+
+    function status()
+    {
+        switch ($this->status) {
+            case 0:
+                return 'Unprocessed';
+            case 1:
+                return 'Processed';
+            case 2:
+                return 'Shipped';
+            case 3:
+                return 'Delivered';
+        }
+    }
 }

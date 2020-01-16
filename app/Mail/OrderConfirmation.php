@@ -16,7 +16,7 @@ class OrderConfirmation extends Mailable
 
     /**
      * Create a new message instance.
-     *
+     * @param order
      * @return void
      */
     public function __construct($order)
@@ -31,8 +31,11 @@ class OrderConfirmation extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.order.confirmation', [
-            'order' => $this->order
-        ]);
+        return $this
+            ->from(config('app.mail'))
+            ->subject(config('app.name') . ' Order')
+            ->view('mail.order.confirmation', [
+                'order' => $this->order
+            ]);
     }
 }

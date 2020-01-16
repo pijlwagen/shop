@@ -143,6 +143,18 @@ Route::group([
     });
 
     /**
+     * Order Routes
+     */
+    Route::group([
+        'namespace' => 'Order',
+        'prefix' => '/orders'
+    ], function () {
+        Route::get('/', 'OrderController@index')->name('admin.orders.index');
+        Route::get('/search', 'OrderController@search')->name('admin.orders.search');
+        Route::get('/{hash}', 'OrderController@edit')->name('admin.orders.edit');
+    });
+
+    /**
      * User Routes
      */
     Route::group([

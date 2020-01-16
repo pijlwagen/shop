@@ -17,7 +17,7 @@ class ProductController extends Controller
         $products = Product::with(['images', 'seo', 'discounts' => function ($query) {
             return $query->where('active_from', '<', Carbon::now()->format('Y-m-d H:i:s'))->where('active_until', '>', Carbon::now()->format('Y-m-d H:i:s'))->orderBy('active_from', 'ASC');
         }])->paginate(12);
-        $categories = Category::with(['products'])->get();
+        $categories = Category::with(['products'])->where('hidden', false)->get();
         return view('products.index', [
             'products' => $products,
             'categories' => $categories
