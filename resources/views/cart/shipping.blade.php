@@ -45,6 +45,7 @@
                                         {{ $address->address_extra }},
                                     @endif
                                     {{$address->zip }} {{ $address->city }},
+                                    {{ $address->province }},
                                     {{ $address->country }}
                                 </div>
                                 <div class="col-auto ml-auto">

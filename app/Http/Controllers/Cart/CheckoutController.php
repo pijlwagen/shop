@@ -55,12 +55,13 @@ class CheckoutController extends Controller
     {
         $request->validate([
             'email' => 'required|email|max:256',
-            'phone' => 'nullable|email|max:256',
+            'phone' => 'nullable|max:16',
             'first-name' => 'required|string|max:256',
             'last-name' => 'required|string|max:256',
             'address' => 'required|string|max:512',
             'address_extra' => 'nullable|string|max:512',
             'city' => 'required|string|max:512',
+            'province' => 'required|string|max:256',
             'zip' => 'required|string|max:16',
             'country' => [
                 'required',
@@ -99,6 +100,7 @@ class CheckoutController extends Controller
                 'address' => $request->input('address'),
                 'address_extra' => $request->input('address-extra'),
                 'city' => $request->input('city'),
+                'province' => $request->input('province'),
                 'zip' => $request->input('zip'),
                 'country' => $request->input('country'),
                 'type' => 0, // shippping
@@ -165,6 +167,7 @@ class CheckoutController extends Controller
             'address' => 'required_if:billing-address,custom|string|max:512',
             'address_extra' => 'nullable|string|max:512',
             'city' => 'required_if:billing-address,custom|string|max:512',
+            'province' => 'required_if:billing-address,custom|string|max:256',
             'zip' => 'required_if:billing-address,custom|string|max:16',
             'country' => [
                 'required_if:billing-address,custom',
@@ -188,6 +191,7 @@ class CheckoutController extends Controller
                 'address' => $request->input('address'),
                 'address_extra' => $request->input('address-extra'),
                 'city' => $request->input('city'),
+                'province' => $request->input('province'),
                 'zip' => $request->input('zip'),
                 'country' => $request->input('country'),
                 'type' => 1, // billing
@@ -203,7 +207,6 @@ class CheckoutController extends Controller
             'address_id' => $shippingAddress->id,
             'email' => Session::get('contact')['email'],
             'phone' => Session::get('contact')['phone'],
-            'status' => 0,
             'hash' => md5(Carbon::now()->timestamp . $billingAddress->id)
         ]);
 

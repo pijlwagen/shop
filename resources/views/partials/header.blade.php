@@ -58,7 +58,7 @@
                                 Administrator
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="admin-dropdown">
-                                <a class="dropdown-item" href="#">Orders</a>
+                                <a class="dropdown-item" href="{{ route('admin.orders.index') }}">Orders</a>
                                 <a class="dropdown-item" href="{{ route('admin.products.index') }}">Products</a>
                                 <a class="dropdown-item" href="{{ route('admin.categories.index') }}">Categories</a>
                                 <a class="dropdown-item" href="{{ route('admin.users.index') }}">Users</a>

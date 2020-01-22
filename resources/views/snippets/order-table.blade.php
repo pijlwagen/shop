@@ -15,10 +15,11 @@
                 @foreach($orders as $order)
                     <tr>
                         <th>{{ 4322 + $order->id }}</th>
-                        <td>{{ $order->status() }}</td>
+                        <td>{{ $order->status ? $order->status->text() : 'Unprocessed' }}</td>
                         <td>{!! $order->payment ? '<i class="fa fa-check text-success"></i>' : '<i class="fa fa-times text-danger"></i>' !!}</td>
                         <td>{{ $order->items->sum('quantity') }}</td>
                         <td>
+                            <a href="{{ route('admin.orders.edit', $order->hash) }}" class="text-warning"><i class="fa fa-edit"></i></a>
 {{--                            <a href="{{ route('admin.products.edit', $product->id) }}" class="text-warning mr-2">--}}
 {{--                                <i class="fa fa-edit"></i>--}}
 {{--                            </a>--}}

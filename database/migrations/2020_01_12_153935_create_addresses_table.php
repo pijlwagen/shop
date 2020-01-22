@@ -22,6 +22,7 @@ class CreateAddressesTable extends Migration
             $table->string('city', 512);
             $table->string('zip', 16);
             $table->string('country', 256);
+            $table->string('province', 256);
             $table->tinyInteger('type')->default(0); // 0 = shipping, 1 = billing
             $table->string('hash', 32);
             $table->timestamps();

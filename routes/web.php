@@ -152,6 +152,7 @@ Route::group([
         Route::get('/', 'OrderController@index')->name('admin.orders.index');
         Route::get('/search', 'OrderController@search')->name('admin.orders.search');
         Route::get('/{hash}', 'OrderController@edit')->name('admin.orders.edit');
+        Route::post('/{hash}', 'OrderController@update')->name('admin.orders.update');
     });
 
     /**

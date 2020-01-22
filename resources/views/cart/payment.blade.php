@@ -45,6 +45,7 @@
                                         {{ $address->address_extra }},
                                     @endif
                                     {{$address->zip }} {{ $address->city }},
+                                    {{ $address->province }},
                                     {{ $address->country }}
                                 </div>
                                 <div class="col-auto ml-auto">
@@ -165,7 +166,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <div class="col-sm-7 mb-3 mb-sm-0">
+                                    <div class="col-md-4 mb-3 mb-sm-0">
                                         <label for="city">City</label>
                                         <input type="text" name="city" id="city" value="{{ old('city') }}"
                                                class="form-control @error('city') is-invalid @enderror">
@@ -175,7 +176,17 @@
                                         </div>
                                         @enderror
                                     </div>
-                                    <div class="col-sm-5">
+                                    <div class="col-md-4 mb-3 mb-sm-0">
+                                        <label for="province">Province / State / Region</label>
+                                        <input type="text" name="province" id="province" value="{{ old('province') }}"
+                                               class="form-control @error('province') is-invalid @enderror">
+                                        @error('province')
+                                        <div class="invalid-feedback" role="alert">
+                                            {{ $message }}
+                                        </div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-4">
                                         <label for="zip">Postal code</label>
                                         <input type="text" name="zip" id="zip" value="{{ old('zip') }}"
                                                class="form-control @error('zip') is-invalid @enderror">

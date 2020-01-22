@@ -15,7 +15,7 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        $users = User::with(['roles'])->paginate($request->get('max', 25));
+        $users = User::with(['roles', 'orders'])->paginate($request->get('max', 25));
         return view('admin.users.index', [
             'users' => $users
         ]);
@@ -23,7 +23,7 @@ class UserController extends Controller
 
     public function edit($id, Request $request)
     {
-        $user = User::with(['roles'])->findOrFail($id);
+        $user = User::with(['roles', 'orders'])->findOrFail($id);
         $roles = Role::all();
         return view('admin.users.edit', [
             'user' => $user,

@@ -18,6 +18,11 @@ class Order extends Model
         'hash'
     ];
 
+    public function status()
+    {
+        return $this->hasOne(OrderStatus::class);
+    }
+
     public function payment()
     {
         return $this->hasOne(Payment::class);
@@ -31,19 +36,5 @@ class Order extends Model
     public function address()
     {
         return $this->hasOne(Address::class, 'id', 'address_id');
-    }
-
-    function status()
-    {
-        switch ($this->status) {
-            case 0:
-                return 'Unprocessed';
-            case 1:
-                return 'Processed';
-            case 2:
-                return 'Shipped';
-            case 3:
-                return 'Delivered';
-        }
     }
 }

@@ -22,7 +22,7 @@
                             <th>{{ $user->id }}</th>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
-                            <td><a href="#">0</a></td>
+                            <td>{{ $user->orders->count() }}</td>
                             <td>
                                 <small>{{ $user->roles ? $user->roles->map(function($role) { return $role->name; })->implode(',') : 'Customer' }}</small>
                             </td>

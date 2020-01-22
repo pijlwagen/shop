@@ -62,7 +62,6 @@
                                 </tr>
                             @endif
                         </table>
-
                     </div>
                 </div>
             </div>
@@ -75,6 +74,34 @@
                         {{ $order->address->address }}<br>
                         {{ $order->address->zip }} {{ $order->address->city }}<br>
                         {{ $order->address->country }}<br>
+                        <hr>
+                        @if ($order->status)
+                            <table class="order-table">
+                                <tbody>
+                                <tr>
+                                    <th>Status:</th>
+                                    <td><a href="/about/order-status">{{ $order->status->text() }}</a></td>
+                                </tr>
+                                <tr>
+                                    <th>Shipping service:</th>
+                                    <td>{{ $order->status->shipper->name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Tracking code:</th>
+                                    <td>{{ $order->status->code}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        @else
+                        <table class="order-table">
+                            <tbody>
+                            <tr>
+                                <th>Status:</th>
+                                <td><a href="/about/order-status">Unprocessed</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        @endif
                     </div>
                 </div>
             </div>

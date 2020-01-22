@@ -7,12 +7,12 @@
                 aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-
+        @php($query = \App\Models\Order::doesntHave('status')->count())
         <div class="collapse navbar-collapse" id="nav">
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a href="#" class="nav-link mr-3"><i class="fa fa-tags"></i> Orders (0)</a>
+                    <a href="#" class="nav-link mr-3"><i class="fa fa-tags"></i> Orders ({{ $query }})</a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.products.index') }}" class="nav-link mr-3"><i class="fa fa-list"></i>

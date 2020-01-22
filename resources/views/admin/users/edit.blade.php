@@ -62,7 +62,8 @@
                     </div>
                     <div class="form-group pb-5">
                         <div class="custom-control custom-checkbox mr-sm-2">
-                            <input type="checkbox" class="custom-control-input" id="block" {{ $user->blocked ? 'checked' : '' }}>
+                            <input type="checkbox" class="custom-control-input"
+                                   id="block" {{ $user->blocked ? 'checked' : '' }}>
                             <label class="custom-control-label" for="block">Block this user</label>
                         </div>
                         <button class="btn btn-primary float-right">Update</button>
@@ -70,16 +71,29 @@
                 </form>
                 <hr>
                 <h3>Orders</h3>
-                <div class="d-flex text-center">
-                    <div class="m-auto">
-                        <h1 class="">
-                            <i class="fa fa-clipboard"></i>
-                        </h1>
-                        <p>
-                            This user has no orders.
-                        </p>
+                @if ($user->orders->first())
+                    <table class="table table-hover table-borderless">
+                        <tbody>
+                        @foreach($user->orders as $order)
+                            <tr>
+                                <td><a href="{{ route('admin.orders.edit', $order->hash) }}">{{ 4322 + $order->id }}</a></td>
+                                <td class="w-100"><a href="{{ route('admin.orders.edit', $order->hash) }}">{{ $order->hash }}</a></td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                @else
+                    <div class="d-flex text-center">
+                        <div class="m-auto">
+                            <h1>
+                                <i class="fa fa-clipboard"></i>
+                            </h1>
+                            <p>
+                                This user has no orders.
+                            </p>
+                        </div>
                     </div>
-                </div>
+                @endif
             </div>
         </div>
     </div>
@@ -87,7 +101,7 @@
 
 @push('js')
     <script>
-        $('#block').on('change', function() {
+        $('#block').on('change', function () {
             $.post('{{ route('admin.users.block', $user->id) }}', {
                 _token: '{{ csrf_token() }}'
             }).done(function (res) {
